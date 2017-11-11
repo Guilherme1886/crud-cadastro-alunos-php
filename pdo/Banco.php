@@ -36,9 +36,37 @@ class Banco
             $stmt->execute();
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-
             return $results;
 
+        } catch (Exception $exception) {
+            echo $exception;
+        }
+
+    }
+
+    function update($nome, $curso, $id)
+    {
+        try {
+            $db = conecta();
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $stmt = $db->prepare("UPDATE {$this->tabela_aluno} SET nome='{$nome}', curso='${curso}' WHERE id=${id}");
+            $stmt->execute();
+
+            return $stmt->rowCount();
+
+        } catch (Exception $exception) {
+            echo $exception;
+        }
+
+    }
+
+    function delete($id)
+    {
+        try {
+            $db = conecta();
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $sql = "DELETE FROM {$this->tabela_aluno} WHERE id=${id}";
+            $db->exec($sql);
 
         } catch (Exception $exception) {
             echo $exception;
